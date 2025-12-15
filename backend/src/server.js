@@ -20,7 +20,7 @@ try {
 
 // Initialize Express app
 const app = express();
-// app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 // Connect to MongoDB
 connectDB();
 
