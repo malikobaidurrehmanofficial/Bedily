@@ -89,22 +89,37 @@ function Analytics() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-brand bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mb-4 bg-gradient-brand bg-clip-text text-transparent">
           Analytics Dashboard
         </h1>
-        <div className="bg-white rounded-lg p-4 shadow-sm">
-          <p className="text-sm text-gray-500 mb-1">Short URL</p>
-          <a
-            href={url.shortUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand-primary hover:underline font-medium text-lg"
-          >
-            {url.shortUrl}
-          </a>
-          <p className="text-sm text-gray-600 mt-2 break-all">
-            <span className="font-medium">Original:</span> {url.originalUrl}
-          </p>
+        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Short URL</p>
+              <a
+                href={url.shortUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-primary hover:underline font-medium text-lg break-all"
+              >
+                {url.shortUrl}
+              </a>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Created</p>
+              <p className="text-gray-900 font-medium">
+                {new Date(url.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <p className="text-sm text-gray-500 mb-1">Original URL</p>
+            <p className="text-gray-700 break-all">{url.originalUrl}</p>
+          </div>
         </div>
       </div>
 
@@ -130,12 +145,39 @@ function Analytics() {
         <div className="bg-gradient-to-br from-brand-primary to-brand-secondary text-white rounded-2xl p-6 shadow-lg">
           <p className="text-sm opacity-90 mb-1">Total Clicks</p>
           <p className="text-5xl font-bold">{analytics.overview.totalClicks.toLocaleString()}</p>
+          {analytics.overview.totalClicks === 0 && (
+            <p className="text-xs opacity-75 mt-2">
+              💡 Share your short link to start tracking clicks
+            </p>
+          )}
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
           <p className="text-sm text-gray-600 mb-1">Unique Visitors</p>
           <p className="text-5xl font-bold text-gray-900">{analytics.overview.uniqueVisitors.toLocaleString()}</p>
+          {analytics.overview.uniqueVisitors === 0 && (
+            <p className="text-xs text-gray-500 mt-2">
+              Waiting for first visitor...
+            </p>
+          )}
         </div>
       </div>
+
+      {/* Zero Clicks Info Banner */}
+      {analytics.overview.totalClicks === 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
+          <div className="flex items-start">
+            <svg className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+            <div className="text-sm text-blue-800">
+              <p className="font-semibold mb-1">Analytics Start When Your Link Is Clicked</p>
+              <p className="text-blue-700">
+                Your short URL has been created successfully, but nobody has clicked it yet. Share the link to start tracking visits, devices, browsers, and referrers.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Clicks Over Time Chart */}
       <div className="bg-white rounded-2xl p-6 shadow-lg mb-8">
